@@ -1,0 +1,64 @@
+#include <bits/stdc++.h>
+using namespace std;
+void lps(int *preSuf,string text,int text_size){
+	int i=1,len=0;
+	preSuf[0]=0; 
+	while(i<text_size){   
+		if(text[i]==text[len]){ //compare len index value with i index value if equal then move 
+								//both by 1
+			preSuf[i]=len+1;    //assign len +1 in preffix suffix array
+			i++;
+			len++;
+		}
+		else{
+			if(len!=0){  			//if text[len] and text[i] not equal then we check if len is not equal to 
+				len=preSuf[len-1]; 	//zero mean there was some char got match, so we go to len-1 index
+			//	i++;				//of preSuf array and assign value into len
+			}
+			else{					//if len and i index value not equal and len equal to zero index 
+				preSuf[i]=0;		//value 
+				i++;	
+			}
+		}
+	}
+}
+int main(){
+	//char text[100];
+	string text,pattern;
+	cin>>text>>pattern;
+//	int text_size=strlen(text);
+    int text_size=text.length();
+    int pattern_size=pattern.length();
+	int preSuf[text_size];
+	lps(preSuf,pattern,pattern_size);
+	
+	int i=0,j=0;
+	while(i<text_size){
+		if(text[i]==pattern[j]){
+			i++;
+			j++;
+		}
+		else{
+			if(j!=0)
+			 j=preSuf[j-1];
+			else
+			  i++;
+		}
+		if(j==pattern_size){
+		  cout<<"pattern found"<<i-j<<endl;
+		  break;
+		}
+	}
+	
+	
+	
+	
+//	
+//		for(int i=0;i<text_size;i++)
+//	  cout<<text[i]<<" ";
+//	cout<<endl;
+//	for(int i=0;i<text_size;i++)
+//	  cout<<preSuf[i]<<" ";
+//	cout<<endl;
+	return 0;
+}
